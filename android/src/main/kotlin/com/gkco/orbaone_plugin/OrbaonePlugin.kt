@@ -4,6 +4,8 @@ import android.app.Activity
 import android.os.Build
 import androidx.annotation.NonNull
 import com.orbaone.orba_one_capture_sdk_core.OrbaOne
+import com.orbaone.orba_one_capture_sdk_core.documentCapture.DocumentCaptureStep
+import com.orbaone.orba_one_capture_sdk_core.helpers.DocumentTypes
 import com.orbaone.orba_one_capture_sdk_core.helpers.Step
 import io.flutter.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -22,6 +24,10 @@ class OrbaonePlugin : FlutterPlugin, ActivityAware {
     private var oneSdk: OrbaOne? = null
 
     private val flowStep = arrayOf(Step.INTRO, Step.ID, Step.FACESCAN, Step.COMPLETE)
+
+
+
+
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "orbaone_plugin")
@@ -43,10 +49,19 @@ class OrbaonePlugin : FlutterPlugin, ActivityAware {
                         val credentials = call.arguments as HashMap<*,*>
                         val apiKey = credentials["apiKey"] as String
                         val applicantId = credentials["applicantId"] as String
+
+                        //todo put exclude configuration on dart layer
+                        val docStep = DocumentCaptureStep.Builder()
+                                .excludeDocument(arrayOf(DocumentTypes.PASSPORT)).create()//.excludeCountry(arrayOf(CountryCode.JM)).create()
+
+
                         oneSdk = OrbaOne.Builder()
                                 .setApiKey(apiKey)
                                 .setApplicantId(applicantId)
-                                .setFlow(flowStep).create()
+                                .setFlow(flowStep)
+                                .setDocumentCapture(docStep)
+                                .create()
+
 
                     } catch (error: IllegalStateException) {
                         Log.e("SDK Error", error.toString())
@@ -56,6 +71,7 @@ class OrbaonePlugin : FlutterPlugin, ActivityAware {
                 }
                 "startIdentification" -> {
                     try {
+
 
                     } catch (error: IllegalStateException) {
                         Log.e("SDK Error", error.toString())
