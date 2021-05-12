@@ -5,3 +5,5 @@
 .pub/
 
 build/
+android/.idea/gradle.xml
+android/.idea/vcs.xml

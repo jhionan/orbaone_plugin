@@ -20,7 +20,7 @@ rootProject.allprojects {
         google()
         jcenter()
         maven {
-    url 'https://s01.oss.sonatype.org/content/repositories/comorbaone-1014'
+    url 'https://s01.oss.sonatype.org/content/repositories/comorbaone-1019'
         }
     }
 }
@@ -41,5 +41,5 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.orbaone:orba-one-sdk:1.0.2'
+    implementation 'com.orbaone:orba-one-sdk:1.0.3'
 }
